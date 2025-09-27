@@ -481,7 +481,7 @@ QFrame#viewerFrame {
         self.label_video_marking.setText(_translate("MainWindow", "视频打标"))
         self.pushButton_start_marking.setText(_translate("MainWindow", "目标跟踪"))
         self.shortcutsTitle.setText(_translate("MainWindow", "快捷键提示"))
-        self.shortcutDetails.setText(_translate("MainWindow", "<b>E</b> - 打开图片目录<br><b>S</b> - 设置保存目录<br><b>V</b> - 打开视频文件<br><b>W</b> - 创建标注矩形<br><b>A</b> / <b>D</b> - 上一张 / 下一张图片"))
+        self.shortcutDetails.setText(_translate("MainWindow", "<b>E</b> - 打开图片目录<br><b>S</b> - 设置保存目录<br><b>V</b> - 打开视频文件<br><b>M</b> - 视频打标<br><b>W</b> - 创建标注矩形<br><b>A</b> / <b>D</b> - 上一张 / 下一张图片"))
         self.actionOpen_Dir.setText(_translate("MainWindow", "Open Dir"))
         self.actionOpen_Dir.setShortcut(_translate("MainWindow", "E"))
         self.actionChange_Save_Dir.setText(_translate("MainWindow", "Change Save Dir"))
@@ -495,4 +495,5 @@ QFrame#viewerFrame {
         self.actionOpen_Video.setText(_translate("MainWindow", "Open Video"))
         self.actionOpen_Video.setShortcut(_translate("MainWindow", "V"))
         self.actionVideo_marking.setText(_translate("MainWindow", "Video marking"))
+        self.actionVideo_marking.setShortcut(_translate("MainWindow", "M"))
 
