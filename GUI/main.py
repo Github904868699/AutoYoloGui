@@ -20,6 +20,19 @@ from sampro.LabelVideo_TW import AnythingVideo_TW
 
 from PyQt5.QtCore import QThread, pyqtSignal, QTimer
 
+
+def imread_unicode(path, flags=cv2.IMREAD_COLOR):
+    """Read images from paths that may contain non-ASCII characters."""
+    try:
+        data = np.fromfile(path, dtype=np.uint8)
+    except Exception:
+        return None
+
+    if data.size == 0:
+        return None
+
+    return cv2.imdecode(data, flags)
+
 class VideoProcessingThread(QThread):
     finished = pyqtSignal()  # 完成信号
     frame_ready = pyqtSignal(object)  # 添加新信号用于传递处理后的帧
@@ -76,6 +89,8 @@ class MainFunc(QMainWindow):
 
         self.sld_video_pressed=False
 
+        self._current_pixmap = None
+
 
         self.image_files = None
         self.img_path = None
@@ -123,6 +138,20 @@ class MainFunc(QMainWindow):
         self.total_frames = 0
         self.current_frame = 0
 
+    def _update_overlay_geometry(self):
+        if hasattr(self.ui, "label_4") and self.ui.label_4 is not None:
+            self.ui.label_4.setFixedSize(self.ui.label_3.size())
+
+    def _render_pixmap(self, pixmap):
+        if pixmap is None or pixmap.isNull():
+            return
+        self._current_pixmap = pixmap
+        if hasattr(self.ui, "videoWidget"):
+            self.ui.videoWidget.hide()
+        self.ui.label_3.setPixmap(pixmap)
+        self.ui.label_3.setFixedSize(pixmap.size())
+        self._update_overlay_geometry()
+
     def Change_Enable(self,method="",state=False):
         if method=="ShowVideo":
             self.ui.pushButton.setEnabled(state)
@@ -164,7 +193,11 @@ class MainFunc(QMainWindow):
             # print(self.image_name)
 
             self.img_path, self.img_width, self.img_height = Change_image_Size(self.img_path)
-            self.image = cv2.imread(self.img_path)
+            self.image = imread_unicode(self.img_path)
+            if self.image is None:
+                upWindowsh("无法读取图片，请检查路径或文件格式")
+                return
+
             self.AT.Set_Image(self.image)
             self.show_qt(self.img_path)
             self.Exists_Labels_And_Boxs()
@@ -215,8 +248,9 @@ class MainFunc(QMainWindow):
     def show_qt(self, img_path):
         if img_path != None:
             Qt_Gui = QtGui.QPixmap(img_path)
-            self.ui.label_3.setFixedSize(self.img_width, self.img_height)
-            self.ui.label_3.setPixmap(Qt_Gui)
+            if Qt_Gui.isNull():
+                return
+            self._render_pixmap(Qt_Gui)
 
     def next_img(self):
         if self.img_path and not self.clicked_event and not self.paint_event:
@@ -274,8 +308,7 @@ class MainFunc(QMainWindow):
                 q_image = QImage(image.data, w, h, bytes_per_line, QImage.Format_RGB888).rgbSwapped()
 
                 Qt_Gui = QtGui.QPixmap(q_image)
-                self.ui.label_3.setFixedSize(self.img_width, self.img_height)
-                self.ui.label_3.setPixmap(Qt_Gui)
+                self._render_pixmap(Qt_Gui)
 
                 self.save = False
         except Exception as e:
@@ -404,7 +437,9 @@ class MainFunc(QMainWindow):
 
     # 显示已存在框
     def Show_Exists(self):
-        image = cv2.imread(self.img_path)
+        image = self.image.copy() if self.image is not None else imread_unicode(self.img_path)
+        if image is None:
+            return
         if self.clicked_save == [] and self.paint_save == []:
             self.show_qt(self.img_path)
         else:
@@ -420,8 +455,7 @@ class MainFunc(QMainWindow):
             q_image = QImage(image.data, w, h, bytes_per_line, QImage.Format_RGB888).rgbSwapped()
 
             Qt_Gui = QtGui.QPixmap(q_image)
-            self.ui.label_3.setFixedSize(self.img_width, self.img_height)
-            self.ui.label_3.setPixmap(Qt_Gui)
+            self._render_pixmap(Qt_Gui)
 
 # ##################################################################################################
     # 手动打标
@@ -557,9 +591,7 @@ class MainFunc(QMainWindow):
                 self.vedio_img = vedio_img
                 
                 # 调整label大小以适应新的图像尺寸
-                self.ui.label_3.setFixedSize(new_width, new_height)
-                self.ui.label_3.setPixmap(QPixmap(self.vedio_img))
-                self.ui.label_3.setScaledContents(True)
+                self._render_pixmap(QPixmap(self.vedio_img))
             else:
                 self.cap.release()
                 self.timer_camera.stop()
@@ -628,9 +660,7 @@ class MainFunc(QMainWindow):
                 self.vedio_img = vedio_img
                 
                 # 调整label大小以适应新的图像尺寸
-                self.ui.label_3.setFixedSize(new_width, new_height)
-                self.ui.label_3.setPixmap(QPixmap(self.vedio_img))
-                self.ui.label_3.setScaledContents(True)
+                self._render_pixmap(QPixmap(self.vedio_img))
 
     def pressSlider(self):
         self.sld_video_pressed = True
@@ -705,14 +735,15 @@ class MainFunc(QMainWindow):
 
                     self.img_path, self.img_width, self.img_height = Change_image_Size(self.img_path)
                     print(self.img_path, self.img_width, self.img_height)
-                    self.image = cv2.imread(self.img_path)
+                    self.image = imread_unicode(self.img_path)
+                    if self.image is None:
+                        upWindowsh("无法读取图片，请检查路径或文件格式")
+                        return
 
                     self.AT.Set_Image(self.image)
                     # 转换为QPixmap并显示
                     Qt_Gui = QtGui.QPixmap(self.img_path)
-                    # 设置label大小为图片原始大小
-                    self.ui.label_3.setFixedSize(self.img_width, self.img_height)
-                    self.ui.label_3.setPixmap(Qt_Gui)
+                    self._render_pixmap(Qt_Gui)
                     self.ui.currentImageLabel.setText(f"当前图片：{os.path.basename(self.image_path)}")
 
             # 鼠标点击触发

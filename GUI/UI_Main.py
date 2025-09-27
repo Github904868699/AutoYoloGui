@@ -56,6 +56,98 @@ class Ui_MainWindow(object):
         MainWindow.setWindowIcon(icon)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
+        MainWindow.setStyleSheet("""
+QMainWindow {
+    background-color: #ffffff;
+}
+QWidget {
+    color: #2d2d32;
+    font: 11pt 'Microsoft YaHei';
+}
+QFrame#frame, QFrame#frame_2, QFrame#infoCard, QFrame#labelsCard {
+    background-color: transparent;
+}
+QFrame#frame_2, QFrame#infoCard, QFrame#labelsCard {
+    background-color: #ffffff;
+    border-radius: 16px;
+    border: 1px solid #e3e3e8;
+}
+QComboBox {
+    background-color: #ffffff;
+    border: 1px solid #cfd0d7;
+    border-radius: 10px;
+    padding: 6px 12px;
+}
+QComboBox:hover {
+    border-color: #aeb0b8;
+}
+QLabel#titleLabel {
+    font: 600 16pt 'Microsoft YaHei';
+    color: #1f1f25;
+}
+QLabel[class="sectionTitle"] {
+    font: 600 12pt 'Microsoft YaHei';
+    color: #2f3037;
+    margin-bottom: 6px;
+}
+QPushButton {
+    background-color: #f6f7fb;
+    border: 1px solid #d5d6de;
+    border-radius: 10px;
+    padding: 9px 16px;
+    color: #2e2e35;
+}
+QPushButton:hover:enabled {
+    background-color: #eceef5;
+    border-color: #bfc1cb;
+}
+QPushButton:disabled {
+    color: #ababb3;
+    border-color: #e4e5eb;
+}
+QListWidget {
+    background-color: #ffffff;
+    border: 1px solid #e3e3e8;
+    border-radius: 14px;
+    padding: 14px;
+}
+QListWidget::item {
+    padding: 8px 10px;
+    border-radius: 8px;
+}
+QListWidget::item:selected {
+    background-color: #e2e6f0;
+    color: #1f1f25;
+}
+QProgressBar {
+    border: 1px solid #e3e3e8;
+    border-radius: 12px;
+    background-color: #f6f7fb;
+    padding: 3px;
+    text-align: center;
+    color: #2d2d32;
+}
+QProgressBar::chunk {
+    background-color: #aeb6cd;
+    border-radius: 10px;
+}
+QSlider::groove:horizontal {
+    height: 4px;
+    border-radius: 2px;
+    background: #dfe1e7;
+}
+QSlider::handle:horizontal {
+    width: 14px;
+    background: #b8bbc6;
+    border-radius: 7px;
+    margin: -5px 0;
+}
+QFrame#viewerFrame {
+    background-color: #ffffff;
+    border-radius: 18px;
+    border: 1px solid #e3e3e8;
+}
+        """)
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.frame = QtWidgets.QFrame(self.centralwidget)
@@ -63,83 +155,117 @@ class Ui_MainWindow(object):
         self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame.setObjectName("frame")
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout(self.frame)
+        self.horizontalLayout_2.setContentsMargins(20, 20, 20, 20)
+        self.horizontalLayout_2.setSpacing(20)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.splitter = QtWidgets.QSplitter(self.frame)
         self.splitter.setOrientation(QtCore.Qt.Horizontal)
         self.splitter.setObjectName("splitter")
         self.scrollArea = QtWidgets.QScrollArea(self.splitter)
+        self.scrollArea.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.scrollArea.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
-        self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 1298, 848))
-        self.scrollAreaWidgetContents.setMinimumSize(QtCore.QSize(1300, 850))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
-        self.label_3 = QtWidgets.QLabel(self.scrollAreaWidgetContents)
-        self.label_3.setGeometry(QtCore.QRect(9, 9, 2000, 1000))
-        self.label_3.setStyleSheet("background: gray;")
+        self.viewerAreaLayout = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
+        self.viewerAreaLayout.setContentsMargins(0, 0, 0, 0)
+        self.viewerAreaLayout.setSpacing(0)
+
+        self.viewerFrame = QtWidgets.QFrame(self.scrollAreaWidgetContents)
+        self.viewerFrame.setObjectName("viewerFrame")
+        self.viewerFrame.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        self.viewerStack = QtWidgets.QStackedLayout(self.viewerFrame)
+        self.viewerStack.setStackingMode(QtWidgets.QStackedLayout.StackAll)
+        self.viewerStack.setContentsMargins(18, 18, 18, 18)
+
+        self.label_3 = QtWidgets.QLabel(self.viewerFrame)
+        self.label_3.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        self.label_3.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_3.setStyleSheet("background-color: transparent;")
         self.label_3.setText("")
         self.label_3.setObjectName("label_3")
+        self.viewerStack.addWidget(self.label_3)
+        self.viewerStack.setAlignment(self.label_3, QtCore.Qt.AlignCenter)
+
+        self.videoLayout = QtWidgets.QVBoxLayout(self.label_3)
+        self.videoLayout.setContentsMargins(0, 0, 0, 0)
+        self.videoLayout.setSpacing(0)
 
         self.videoWidget = QVideoWidget(self.label_3)
+        self.videoWidget.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        self.videoLayout.addWidget(self.videoWidget)
+        self.videoWidget.hide()
 
         self.mediaPlayer = QMediaPlayer()
         self.mediaPlayer.setVideoOutput(self.videoWidget)
-        
-        self.label_4 = QtWidgets.QLabel(self.scrollAreaWidgetContents)
-        self.label_4.setGeometry(QtCore.QRect(10, 10, 2000, 1000))
-        self.label_4.setMouseTracking(True)
-        self.label_4.setText("")
-        self.label_4.setObjectName("label_4")
 
-        # 如果 scrollAreaWidgetContents 没有布局，给它设置一个默认布局
-        if not self.scrollAreaWidgetContents.layout():
-            self.layout = QtWidgets.QVBoxLayout(self.scrollAreaWidgetContents)
-            self.scrollAreaWidgetContents.setLayout(self.layout)
+        self.viewerAreaLayout.addWidget(self.viewerFrame)
+
+        self.label_4 = None
+        self.disableLabel4()
 
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.layoutWidget = QtWidgets.QWidget(self.splitter)
+        self.layoutWidget.setMinimumWidth(360)
         self.layoutWidget.setObjectName("layoutWidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.layoutWidget)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout.setSpacing(20)
         self.verticalLayout.setObjectName("verticalLayout")
 
         MainWindow.setCentralWidget(self.centralwidget)
         self.setSplitterSizes()
 
-        self.label = QtWidgets.QLabel(self.layoutWidget)
+        self.infoCard = QtWidgets.QFrame(self.layoutWidget)
+        self.infoCard.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.infoCard.setObjectName("infoCard")
+        self.infoLayout = QtWidgets.QVBoxLayout(self.infoCard)
+        self.infoLayout.setContentsMargins(20, 20, 20, 20)
+        self.infoLayout.setSpacing(12)
+        self.infoLayout.setObjectName("infoLayout")
+        self.titleLabel = QtWidgets.QLabel(self.infoCard)
+        self.titleLabel.setObjectName("titleLabel")
+        self.infoLayout.addWidget(self.titleLabel)
+        self.titleLabel.setVisible(False)
+        self.label = QtWidgets.QLabel(self.infoCard)
         self.label.setObjectName("label")
-        self.verticalLayout.addWidget(self.label)
-        self.comboBox = QtWidgets.QComboBox(self.layoutWidget)
+        self.label.setProperty("class", "sectionTitle")
+        self.infoLayout.addWidget(self.label)
+        self.comboBox = QtWidgets.QComboBox(self.infoCard)
         self.comboBox.setObjectName("comboBox")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
         self.comboBox.setFocusPolicy(QtCore.Qt.NoFocus)
-        self.verticalLayout.addWidget(self.comboBox)
-
-        self.currentImageLabel = QtWidgets.QLabel(self.layoutWidget)
+        self.infoLayout.addWidget(self.comboBox)
+        self.currentImageLabel = QtWidgets.QLabel(self.infoCard)
         self.currentImageLabel.setObjectName("currentImageLabel")
         self.currentImageLabel.setWordWrap(True)
-        self.verticalLayout.addWidget(self.currentImageLabel)
+        self.infoLayout.addWidget(self.currentImageLabel)
+        self.verticalLayout.addWidget(self.infoCard)
+
         self.frame_2 = QtWidgets.QFrame(self.layoutWidget)
         self.frame_2.setMinimumSize(QtCore.QSize(0, 50))
-        self.frame_2.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_2.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.frame_2.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_2.setObjectName("frame_2")
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.frame_2)
+        self.verticalLayout_2.setContentsMargins(20, 20, 20, 20)
+        self.verticalLayout_2.setSpacing(12)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
-        
+
         # 添加进度条
         self.progressBar = QtWidgets.QProgressBar(self.frame_2)
         self.progressBar.setObjectName("progressBar")
         self.progressBar.setValue(0)
         self.progressBar.hide()  # 初始状态隐藏
         self.verticalLayout_2.addWidget(self.progressBar)
-        
+
         self.label_5 = QtWidgets.QLabel(self.frame_2)
-        self.label_5.setStyleSheet("font: 75 11pt \"Arial\";\n"
-"")
         self.label_5.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.label_5.setObjectName("label_5")
+        self.label_5.setProperty("class", "sectionTitle")
         self.verticalLayout_2.addWidget(self.label_5)
         self.horizontalSlider = QtWidgets.QSlider(self.frame_2)
         self.horizontalSlider.setEnabled(False)
@@ -173,9 +299,9 @@ class Ui_MainWindow(object):
 
        # 添加"视频打标"标签
         self.label_video_marking = QtWidgets.QLabel(self.frame_2)
-        self.label_video_marking.setStyleSheet("font: 75 11pt \"Arial\";")
         self.label_video_marking.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
         self.label_video_marking.setObjectName("label_video_marking")
+        self.label_video_marking.setProperty("class", "sectionTitle")
         self.verticalLayout_2.addWidget(self.label_video_marking)
 
         # 添加"开始检测打标"按钮
@@ -186,15 +312,26 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.addWidget(self.pushButton_start_marking)
 
         self.verticalLayout.addWidget(self.frame_2)
-        self.label_2 = QtWidgets.QLabel(self.layoutWidget)
+        self.labelsCard = QtWidgets.QFrame(self.layoutWidget)
+        self.labelsCard.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
+        self.labelsCard.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.labelsCard.setObjectName("labelsCard")
+        self.labelsLayout = QtWidgets.QVBoxLayout(self.labelsCard)
+        self.labelsLayout.setContentsMargins(20, 20, 20, 20)
+        self.labelsLayout.setSpacing(12)
+        self.labelsLayout.setObjectName("labelsLayout")
+        self.label_2 = QtWidgets.QLabel(self.labelsCard)
         self.label_2.setObjectName("label_2")
-        self.verticalLayout.addWidget(self.label_2)
-        self.listWidget = QtWidgets.QListWidget(self.layoutWidget)
+        self.label_2.setProperty("class", "sectionTitle")
+        self.labelsLayout.addWidget(self.label_2)
+        self.listWidget = QtWidgets.QListWidget(self.labelsCard)
         self.listWidget.setObjectName("listWidget")
-
+        self.listWidget.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         self.listWidget.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.labelsLayout.addWidget(self.listWidget)
+        self.verticalLayout.addWidget(self.labelsCard)
 
-        self.verticalLayout.addWidget(self.listWidget)
+        self.verticalLayout.addStretch(1)
         self.horizontalLayout_2.addWidget(self.splitter)
         self.horizontalLayout.addWidget(self.frame)
         MainWindow.setCentralWidget(self.centralwidget)
@@ -205,12 +342,6 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
-        self.toolBar = QtWidgets.QToolBar(MainWindow)
-        self.toolBar.setEnabled(True)
-        self.toolBar.setIconSize(QtCore.QSize(45, 45))
-        self.toolBar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
-        self.toolBar.setObjectName("toolBar")
-        MainWindow.addToolBar(QtCore.Qt.LeftToolBarArea, self.toolBar)
         self.actionOpen_Dir = QtWidgets.QAction(MainWindow)
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap("GUI/icons/open.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -260,14 +391,18 @@ class Ui_MainWindow(object):
 
         self.actionOpen_Video.triggered.connect(self.disableLabel4)
 
-        self.toolBar.addAction(self.actionOpen_Video)
-        self.toolBar.addAction(self.actionOpen_Dir)
-        self.toolBar.addAction(self.actionChange_Save_Dir)
-        self.toolBar.addAction(self.actionVideo_marking)
-        self.toolBar.addAction(self.actionNext_Image)
-        self.toolBar.addAction(self.actionPrev_Image)
-        self.toolBar.addAction(self.actionCreate_RectBox)
+        MainWindow.addAction(self.actionOpen_Video)
+        MainWindow.addAction(self.actionOpen_Dir)
+        MainWindow.addAction(self.actionChange_Save_Dir)
+        MainWindow.addAction(self.actionVideo_marking)
+        MainWindow.addAction(self.actionNext_Image)
+        MainWindow.addAction(self.actionPrev_Image)
+        MainWindow.addAction(self.actionCreate_RectBox)
         
+
+        self.splitter.setStretchFactor(0, 4)
+        self.splitter.setStretchFactor(1, 1)
+        QtCore.QTimer.singleShot(0, self.setSplitterSizes)
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -275,41 +410,50 @@ class Ui_MainWindow(object):
     def setSplitterSizes(self):
         # 根据当前 splitter 的宽度设置比例
         total_size = self.splitter.size().width()
-        size1 = int(0.8 * total_size)  # 第一个区域占75%
-        size2 = total_size - size1  # 第二个区域占剩余的20%
+        if total_size <= 0:
+            return
+        size1 = int(0.8 * total_size)  # 第一个区域约占80%
+        size2 = max(total_size - size1, 0)  # 第二个区域占剩余部分
         self.splitter.setSizes([size1, size2])
+
+    def _setOverlay(self, overlay_widget):
+        if self.label_4 is not None:
+            self.viewerStack.removeWidget(self.label_4)
+            self.label_4.deleteLater()
+
+        overlay_widget.setParent(self.viewerFrame)
+        overlay_widget.setMinimumSize(QtCore.QSize(0, 0))
+        overlay_widget.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        overlay_widget.setStyleSheet("background-color: transparent;")
+        overlay_widget.setObjectName("label_4")
+        overlay_widget.setMouseTracking(True)
+        self.viewerStack.addWidget(overlay_widget)
+        self.viewerStack.setAlignment(overlay_widget, QtCore.Qt.AlignCenter)
+        overlay_widget.resize(self.label_3.size())
+        self.label_4 = overlay_widget
 
     def enableLabel4(self):
         # 点击打开目录后启用 MyLabel
-        self.label_4.deleteLater()  # 删除原来的 QLabel
-        
-        # 创建 MyLabel 实例并添加到布局
-        self.label_4 = MyLabel(self.scrollAreaWidgetContents)
-        self.label_4.setGeometry(QtCore.QRect(10, 10, 2000, 1000))
-        self.label_4.setText("")
-        self.label_4.setObjectName("label_4")
-        self.scrollAreaWidgetContents.layout().addWidget(self.label_4)
-        
-
+        overlay = MyLabel(self.viewerFrame)
+        overlay.setCursor(QtGui.QCursor(QtCore.Qt.CrossCursor))
+        self._setOverlay(overlay)
 
     def disableLabel4(self):
-        self.label_4.deleteLater()  # 删除原来的 QLabel
-        
-        self.label_4 = QtWidgets.QLabel(self.scrollAreaWidgetContents)
-        self.label_4.setGeometry(QtCore.QRect(10, 10, 2000, 1000))
-        self.label_4.setText("")
-        self.label_4.setObjectName("label_4")
-        self.scrollAreaWidgetContents.layout().addWidget(self.label_4)
+        overlay = QtWidgets.QLabel(self.viewerFrame)
+        overlay.setAttribute(QtCore.Qt.WA_TransparentForMouseEvents, True)
+        overlay.setText("")
+        self._setOverlay(overlay)
         
 
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "Auto Yolo Labeler"))
+        self.titleLabel.setText(_translate("MainWindow", "Auto Yolo Labeler"))
         self.label.setText(_translate("MainWindow", "保存类型"))
         self.comboBox.setItemText(1, _translate("MainWindow", "XML"))
         self.comboBox.setItemText(0, _translate("MainWindow", "YOLO"))
-        self.currentImageLabel.setText(_translate("MainWindow", ""))
+        self.currentImageLabel.setText(_translate("MainWindow", "当前图片路径将在此显示"))
         self.label_2.setText(_translate("MainWindow", "标签"))
         self.label_5.setText(_translate("MainWindow", "视频："))
         self.pushButton.setText(_translate("MainWindow", "开始"))
@@ -319,7 +463,6 @@ class Ui_MainWindow(object):
         self.pushButton_4.setText(_translate("MainWindow", "重新播放"))
         self.label_video_marking.setText(_translate("MainWindow", "视频打标"))
         self.pushButton_start_marking.setText(_translate("MainWindow", "目标跟踪"))
-        self.toolBar.setWindowTitle(_translate("MainWindow", "toolBar"))
         self.actionOpen_Dir.setText(_translate("MainWindow", "Open Dir"))
         self.actionOpen_Dir.setShortcut(_translate("MainWindow", "E"))
         self.actionChange_Save_Dir.setText(_translate("MainWindow", "Change Save Dir"))
@@ -333,4 +476,5 @@ class Ui_MainWindow(object):
         self.actionOpen_Video.setText(_translate("MainWindow", "Open Video"))
         self.actionOpen_Video.setShortcut(_translate("MainWindow", "V"))
         self.actionVideo_marking.setText(_translate("MainWindow", "Video marking"))
+        self.actionVideo_marking.setShortcut(_translate("MainWindow", "M"))
 
