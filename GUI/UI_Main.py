@@ -58,29 +58,28 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName("centralwidget")
         MainWindow.setStyleSheet("""
 QMainWindow {
-    background-color: #f1f1f3;
+    background-color: #ffffff;
 }
 QWidget {
     color: #2d2d32;
     font: 11pt 'Microsoft YaHei';
 }
-QFrame#frame, QFrame#frame_2, QFrame#infoCard, QFrame#shortcutsCard, QFrame#labelsCard {
+QFrame#frame, QFrame#frame_2, QFrame#infoCard, QFrame#labelsCard {
     background-color: transparent;
 }
-QFrame#frame_2, QFrame#infoCard, QFrame#shortcutsCard, QFrame#labelsCard {
-    background-color: #f9f9fb;
+QFrame#frame_2, QFrame#infoCard, QFrame#labelsCard {
+    background-color: #ffffff;
     border-radius: 16px;
-    border: 1px solid #d9d9de;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+    border: 1px solid #e3e3e8;
 }
 QComboBox {
     background-color: #ffffff;
-    border: 1px solid #c8c8ce;
+    border: 1px solid #cfd0d7;
     border-radius: 10px;
     padding: 6px 12px;
 }
 QComboBox:hover {
-    border-color: #a0a0a8;
+    border-color: #aeb0b8;
 }
 QLabel#titleLabel {
     font: 600 16pt 'Microsoft YaHei';
@@ -88,27 +87,27 @@ QLabel#titleLabel {
 }
 QLabel[class="sectionTitle"] {
     font: 600 12pt 'Microsoft YaHei';
-    color: #34343a;
+    color: #2f3037;
     margin-bottom: 6px;
 }
 QPushButton {
-    background-color: #f5f5f7;
-    border: 1px solid #d0d0d8;
+    background-color: #f6f7fb;
+    border: 1px solid #d5d6de;
     border-radius: 10px;
     padding: 9px 16px;
     color: #2e2e35;
 }
 QPushButton:hover:enabled {
-    background-color: #e7e7eb;
-    border-color: #b8b8c2;
+    background-color: #eceef5;
+    border-color: #bfc1cb;
 }
 QPushButton:disabled {
-    color: #a4a4ac;
-    border-color: #e1e1e6;
+    color: #ababb3;
+    border-color: #e4e5eb;
 }
 QListWidget {
     background-color: #ffffff;
-    border: 1px solid #dcdcE2;
+    border: 1px solid #e3e3e8;
     border-radius: 14px;
     padding: 14px;
 }
@@ -117,40 +116,36 @@ QListWidget::item {
     border-radius: 8px;
 }
 QListWidget::item:selected {
-    background-color: #d9dde5;
+    background-color: #e2e6f0;
     color: #1f1f25;
 }
 QProgressBar {
-    border: 1px solid #dcdcE2;
+    border: 1px solid #e3e3e8;
     border-radius: 12px;
-    background-color: #f5f5f7;
+    background-color: #f6f7fb;
     padding: 3px;
     text-align: center;
     color: #2d2d32;
 }
 QProgressBar::chunk {
-    background-color: #a5adc4;
+    background-color: #aeb6cd;
     border-radius: 10px;
 }
 QSlider::groove:horizontal {
     height: 4px;
     border-radius: 2px;
-    background: #d7d7dd;
+    background: #dfe1e7;
 }
 QSlider::handle:horizontal {
     width: 14px;
-    background: #a3a3ab;
+    background: #b8bbc6;
     border-radius: 7px;
     margin: -5px 0;
 }
-QLabel#shortcutDetails {
-    line-height: 1.5em;
-    color: #5a5a62;
-}
 QFrame#viewerFrame {
-    background-color: #fefefe;
+    background-color: #ffffff;
     border-radius: 18px;
-    border: 1px solid #dcdcE2;
+    border: 1px solid #e3e3e8;
 }
         """)
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
@@ -211,7 +206,7 @@ QFrame#viewerFrame {
 
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.layoutWidget = QtWidgets.QWidget(self.splitter)
-        self.layoutWidget.setMinimumWidth(320)
+        self.layoutWidget.setMinimumWidth(360)
         self.layoutWidget.setObjectName("layoutWidget")
         self.verticalLayout = QtWidgets.QVBoxLayout(self.layoutWidget)
         self.verticalLayout.setContentsMargins(0, 0, 0, 0)
@@ -315,6 +310,7 @@ QFrame#viewerFrame {
 
         self.verticalLayout.addWidget(self.frame_2)
         self.labelsCard = QtWidgets.QFrame(self.layoutWidget)
+        self.labelsCard.setSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Expanding)
         self.labelsCard.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.labelsCard.setObjectName("labelsCard")
         self.labelsLayout = QtWidgets.QVBoxLayout(self.labelsCard)
@@ -327,29 +323,11 @@ QFrame#viewerFrame {
         self.labelsLayout.addWidget(self.label_2)
         self.listWidget = QtWidgets.QListWidget(self.labelsCard)
         self.listWidget.setObjectName("listWidget")
-
+        self.listWidget.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         self.listWidget.setFocusPolicy(QtCore.Qt.NoFocus)
         self.labelsLayout.addWidget(self.listWidget)
         self.verticalLayout.addWidget(self.labelsCard)
 
-        self.shortcutsCard = QtWidgets.QFrame(self.layoutWidget)
-        self.shortcutsCard.setFrameShape(QtWidgets.QFrame.NoFrame)
-        self.shortcutsCard.setObjectName("shortcutsCard")
-        self.shortcutsLayout = QtWidgets.QVBoxLayout(self.shortcutsCard)
-        self.shortcutsLayout.setContentsMargins(20, 20, 20, 20)
-        self.shortcutsLayout.setSpacing(10)
-        self.shortcutsLayout.setObjectName("shortcutsLayout")
-        self.shortcutsTitle = QtWidgets.QLabel(self.shortcutsCard)
-        self.shortcutsTitle.setObjectName("shortcutsTitle")
-        self.shortcutsTitle.setProperty("class", "sectionTitle")
-        self.shortcutsLayout.addWidget(self.shortcutsTitle)
-        self.shortcutDetails = QtWidgets.QLabel(self.shortcutsCard)
-        self.shortcutDetails.setObjectName("shortcutDetails")
-        self.shortcutDetails.setAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
-        self.shortcutDetails.setWordWrap(True)
-        self.shortcutDetails.setTextFormat(QtCore.Qt.RichText)
-        self.shortcutsLayout.addWidget(self.shortcutDetails)
-        self.verticalLayout.addWidget(self.shortcutsCard)
         self.verticalLayout.addStretch(1)
         self.horizontalLayout_2.addWidget(self.splitter)
         self.horizontalLayout.addWidget(self.frame)
@@ -480,8 +458,6 @@ QFrame#viewerFrame {
         self.pushButton_4.setText(_translate("MainWindow", "重新播放"))
         self.label_video_marking.setText(_translate("MainWindow", "视频打标"))
         self.pushButton_start_marking.setText(_translate("MainWindow", "目标跟踪"))
-        self.shortcutsTitle.setText(_translate("MainWindow", "快捷键提示"))
-        self.shortcutDetails.setText(_translate("MainWindow", "<b>E</b> - 打开图片目录<br><b>S</b> - 设置保存目录<br><b>V</b> - 打开视频文件<br><b>M</b> - 视频打标<br><b>W</b> - 创建标注矩形<br><b>A</b> / <b>D</b> - 上一张 / 下一张图片"))
         self.actionOpen_Dir.setText(_translate("MainWindow", "Open Dir"))
         self.actionOpen_Dir.setShortcut(_translate("MainWindow", "E"))
         self.actionChange_Save_Dir.setText(_translate("MainWindow", "Change Save Dir"))

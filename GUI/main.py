@@ -20,6 +20,19 @@ from sampro.LabelVideo_TW import AnythingVideo_TW
 
 from PyQt5.QtCore import QThread, pyqtSignal, QTimer
 
+
+def imread_unicode(path, flags=cv2.IMREAD_COLOR):
+    """Read images from paths that may contain non-ASCII characters."""
+    try:
+        data = np.fromfile(path, dtype=np.uint8)
+    except Exception:
+        return None
+
+    if data.size == 0:
+        return None
+
+    return cv2.imdecode(data, flags)
+
 class VideoProcessingThread(QThread):
     finished = pyqtSignal()  # 完成信号
     frame_ready = pyqtSignal(object)  # 添加新信号用于传递处理后的帧
@@ -164,7 +177,11 @@ class MainFunc(QMainWindow):
             # print(self.image_name)
 
             self.img_path, self.img_width, self.img_height = Change_image_Size(self.img_path)
-            self.image = cv2.imread(self.img_path)
+            self.image = imread_unicode(self.img_path)
+            if self.image is None:
+                upWindowsh("无法读取图片，请检查路径或文件格式")
+                return
+
             self.AT.Set_Image(self.image)
             self.show_qt(self.img_path)
             self.Exists_Labels_And_Boxs()
@@ -404,7 +421,9 @@ class MainFunc(QMainWindow):
 
     # 显示已存在框
     def Show_Exists(self):
-        image = cv2.imread(self.img_path)
+        image = self.image.copy() if self.image is not None else imread_unicode(self.img_path)
+        if image is None:
+            return
         if self.clicked_save == [] and self.paint_save == []:
             self.show_qt(self.img_path)
         else:
@@ -705,7 +724,10 @@ class MainFunc(QMainWindow):
 
                     self.img_path, self.img_width, self.img_height = Change_image_Size(self.img_path)
                     print(self.img_path, self.img_width, self.img_height)
-                    self.image = cv2.imread(self.img_path)
+                    self.image = imread_unicode(self.img_path)
+                    if self.image is None:
+                        upWindowsh("无法读取图片，请检查路径或文件格式")
+                        return
 
                     self.AT.Set_Image(self.image)
                     # 转换为QPixmap并显示
