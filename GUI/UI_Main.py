@@ -187,6 +187,7 @@ QFrame#viewerFrame {
         self.label_3.setText("")
         self.label_3.setObjectName("label_3")
         self.viewerStack.addWidget(self.label_3)
+        self.viewerStack.setAlignment(self.label_3, QtCore.Qt.AlignCenter)
 
         self.videoLayout = QtWidgets.QVBoxLayout(self.label_3)
         self.videoLayout.setContentsMargins(0, 0, 0, 0)
@@ -195,6 +196,7 @@ QFrame#viewerFrame {
         self.videoWidget = QVideoWidget(self.label_3)
         self.videoWidget.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         self.videoLayout.addWidget(self.videoWidget)
+        self.videoWidget.hide()
 
         self.mediaPlayer = QMediaPlayer()
         self.mediaPlayer.setVideoOutput(self.videoWidget)
@@ -226,6 +228,7 @@ QFrame#viewerFrame {
         self.titleLabel = QtWidgets.QLabel(self.infoCard)
         self.titleLabel.setObjectName("titleLabel")
         self.infoLayout.addWidget(self.titleLabel)
+        self.titleLabel.setVisible(False)
         self.label = QtWidgets.QLabel(self.infoCard)
         self.label.setObjectName("label")
         self.label.setProperty("class", "sectionTitle")
@@ -425,6 +428,8 @@ QFrame#viewerFrame {
         overlay_widget.setObjectName("label_4")
         overlay_widget.setMouseTracking(True)
         self.viewerStack.addWidget(overlay_widget)
+        self.viewerStack.setAlignment(overlay_widget, QtCore.Qt.AlignCenter)
+        overlay_widget.resize(self.label_3.size())
         self.label_4 = overlay_widget
 
     def enableLabel4(self):
