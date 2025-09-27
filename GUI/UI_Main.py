@@ -58,93 +58,93 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName("centralwidget")
         MainWindow.setStyleSheet("""
 QMainWindow {
-    background-color: #0f172a;
+    background-color: #f4f6fb;
 }
 QWidget {
-    color: #e2e8f0;
+    color: #1e293b;
     font: 11pt 'Microsoft YaHei';
 }
 QFrame#frame, QFrame#frame_2, QFrame#infoCard, QFrame#shortcutsCard, QFrame#labelsCard {
-    background-color: #111827;
-    border-radius: 16px;
-}
-QFrame#frame {
     background-color: transparent;
 }
 QFrame#frame_2, QFrame#infoCard, QFrame#shortcutsCard, QFrame#labelsCard {
-    border: 1px solid #1f2937;
+    background-color: #ffffff;
+    border-radius: 14px;
+    border: 1px solid #e2e8f0;
 }
 QComboBox {
-    background-color: #1f2937;
-    border: 1px solid #334155;
-    border-radius: 10px;
+    background-color: #ffffff;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
     padding: 6px 12px;
 }
 QComboBox:hover {
-    border-color: #38bdf8;
+    border-color: #94a3b8;
 }
 QLabel#titleLabel {
     font: 600 16pt 'Microsoft YaHei';
-    color: #f8fafc;
+    color: #0f172a;
 }
 QLabel[class="sectionTitle"] {
     font: 600 12pt 'Microsoft YaHei';
-    color: #cbd5f5;
+    color: #1e293b;
     margin-bottom: 6px;
 }
 QPushButton {
-    background-color: #1f2937;
-    border: 1px solid #334155;
-    border-radius: 10px;
+    background-color: #f8fafc;
+    border: 1px solid #d4dbe5;
+    border-radius: 8px;
     padding: 8px 14px;
-    color: #e2e8f0;
+    color: #1f2937;
 }
 QPushButton:hover:enabled {
-    background-color: #38bdf8;
-    border-color: #38bdf8;
-    color: #0f172a;
+    background-color: #e2e8f0;
+    border-color: #cbd5e1;
 }
 QPushButton:disabled {
-    color: #475569;
-    border-color: #1f2937;
+    color: #94a3b8;
+    border-color: #e2e8f0;
 }
 QListWidget {
-    background-color: #111827;
-    border: 1px solid #1f2937;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
     border-radius: 12px;
     padding: 12px;
 }
 QListWidget::item {
     padding: 6px 10px;
-    border-radius: 8px;
+    border-radius: 6px;
 }
 QListWidget::item:selected {
-    background-color: rgba(56, 189, 248, 0.25);
+    background-color: #e0f2fe;
+    color: #0f172a;
 }
 QProgressBar {
-    border: 1px solid #1f2937;
+    border: 1px solid #e2e8f0;
     border-radius: 10px;
-    background-color: #0f172a;
+    background-color: #f8fafc;
     padding: 3px;
     text-align: center;
+    color: #0f172a;
 }
 QProgressBar::chunk {
     background-color: #38bdf8;
     border-radius: 8px;
 }
 QSlider::groove:horizontal {
-    height: 6px;
-    border-radius: 3px;
-    background: #334155;
+    height: 4px;
+    border-radius: 2px;
+    background: #e2e8f0;
 }
 QSlider::handle:horizontal {
-    width: 16px;
-    background: #38bdf8;
-    border-radius: 8px;
-    margin: -6px 0;
+    width: 14px;
+    background: #94a3b8;
+    border-radius: 7px;
+    margin: -5px 0;
 }
 QLabel#shortcutDetails {
     line-height: 1.5em;
+    color: #475569;
 }
         """)
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
@@ -161,15 +161,20 @@ QLabel#shortcutDetails {
         self.splitter.setOrientation(QtCore.Qt.Horizontal)
         self.splitter.setObjectName("splitter")
         self.scrollArea = QtWidgets.QScrollArea(self.splitter)
+        self.scrollArea.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.scrollArea.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
+        self.scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
         self.scrollArea.setWidgetResizable(True)
         self.scrollArea.setObjectName("scrollArea")
         self.scrollAreaWidgetContents = QtWidgets.QWidget()
         self.scrollAreaWidgetContents.setGeometry(QtCore.QRect(0, 0, 1298, 848))
-        self.scrollAreaWidgetContents.setMinimumSize(QtCore.QSize(1300, 850))
+        self.scrollAreaWidgetContents.setMinimumSize(QtCore.QSize(0, 0))
         self.scrollAreaWidgetContents.setObjectName("scrollAreaWidgetContents")
         self.label_3 = QtWidgets.QLabel(self.scrollAreaWidgetContents)
         self.label_3.setGeometry(QtCore.QRect(9, 9, 2000, 1000))
-        self.label_3.setStyleSheet("background-color: #0f172a; border-radius: 18px;")
+        self.label_3.setMinimumSize(QtCore.QSize(0, 0))
+        self.label_3.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        self.label_3.setStyleSheet("background-color: #ffffff; border-radius: 18px; border: 1px solid #e2e8f0;")
         self.label_3.setText("")
         self.label_3.setObjectName("label_3")
 
@@ -180,6 +185,8 @@ QLabel#shortcutDetails {
         
         self.label_4 = QtWidgets.QLabel(self.scrollAreaWidgetContents)
         self.label_4.setGeometry(QtCore.QRect(10, 10, 2000, 1000))
+        self.label_4.setMinimumSize(QtCore.QSize(0, 0))
+        self.label_4.setSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
         self.label_4.setMouseTracking(True)
         self.label_4.setText("")
         self.label_4.setObjectName("label_4")
